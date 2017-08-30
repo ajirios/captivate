@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Captive</title>
+  <link rel="stylesheet" type="text/css" href="shared/tma1.css" media="screen" />
+</head>
+
+<body>
+    
+  
+  <header>
+      
+    
+      <div class="head">
+        
+            <nav>
+                
+                <ul>
+                    
+                </ul>
+                    
+            </nav>
+        
+      </div>
+    
+  </header>
+    
+    
+    <div class="divers">
+        
+        <div id="canvas-div">
+            
+            <canvas id="drawLines" width="1000" height="500" style="border:1px solid black;margin:0px 0px 0px 0px;background-color:white"></canvas>
+            
+        </div>
+        
+        <div id="caption-div">
+            
+            <p id="caption"></p>
+            
+        </div>
+        
+        <div id="controls-div">
+            
+            <div id="button-controls">
+                
+                <input type="button" id="previous-button" name="previous-button" value="Previous" onclick="previousSlide()"/> &nbsp; &nbsp;
+                <input type="button" id="stop-button" name="stop-button" value="Stop" onclick="stopSlide()"/> &nbsp; &nbsp;
+                <input type="button" id="start-button" name="start-button" value="Start" onclick="startSlide()"/> &nbsp; &nbsp;
+                <input type="button" id="next-button" name="next-button" value="Next" onclick="nextSlide()"/> &nbsp; &nbsp;
+                
+            </div>
+            
+            <div id="random-controls">
+                
+                <input type="button" id="stop-button" name="stop-button" value="Stop" onclick="stopSlide()"/> &nbsp; &nbsp;
+                <input type="button" id="generate-button" name="generate-button" value="Generate" onclick="generateSlide()"/> &nbsp; &nbsp;
+                
+            </div>
+            
+        </div>
+        
+        <div id="radio-controls-div">
+            
+            <div id="radio-controls">
+                
+                <label>Sequential</label><input type="radio" id="sequential" name="displaySequence" value="sequential"/> &nbsp; &nbsp;
+                <label>Random</label><input type="radio" id="random" name="displaySequence" value="random"/>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        
+
+	<script type="text/javascript">
+
+	var canvas = document.getElementById("drawLines");
+	var context = canvas.getContext("2d");
+        
+        var data = [];
+        var currentElement = 0;
+
+
+
+var image = new Image();
+image.src = "shared/image11.jpg";
+
+
+function executeSequence()
+
+{
+
+document.getElementById("controls-div").style.display = "block";
+document.getElementById("button-controls").style.display = "block";
+document.getElementById("random-controls").style.display = "none";
+
+}
+
+function executeRandom()
+
+{    
+    document.getElementById("controls-div").style.display = "block";
+    document.getElementById("button-controls").style.display = "none";
+    document.getElementById("random-controls").style.display = "block";
+    var element = parseInt(Math.random() * 20);
+    currentElement = element;
+    
+    if (currentElement > 0 && currentElement < 20)
+    
+    {
+        var currentImage = data[currentElement].image;
+        var currentCaption = data[currentElement].caption;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        image = new Image();
+        image.src = currentImage;
+        context.drawImage(image, 0, 0, 1000, 500);
+        document.getElementById("caption").innerHTML = currentCaption;
+    }
+    
+}
+
+function generateSlide()
+
+{
+    var element = parseInt(Math.random() * 20);
+    currentElement = element;
+    
+    if (currentElement > 0 && currentElement < 20)
+    
+    {
+        var currentImage = data[currentElement].image;
+        var currentCaption = data[currentElement].caption;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        image = new Image();
+        image.src = currentImage;
+        context.drawImage(image, 0, 0, 1000, 500);
+        document.getElementById("caption").innerHTML = currentCaption;
+    }
+    
+}
+
+function previousSlide()
+
+{
+    if (currentElement > 0)
+    
+    {
+        currentElement--;
+        var currentImage = data[currentElement].image;
+        var currentCaption = data[currentElement].caption;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        image = new Image();
+        image.src = currentImage;
+        context.drawImage(image, 0, 0, 1000, 500);
+        document.getElementById("caption").innerHTML = currentCaption;
+    }
+    
+}
+
+function stopSlide()
+
+{
+        currentElement = 0;
+        var currentImage = data[currentElement].image;
+        var currentCaption = data[currentElement].caption;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        image = new Image();
+        image.src = currentImage;
+        context.drawImage(image, 0, 0, 1000, 500);
+        document.getElementById("caption").innerHTML = currentCaption;
+        document.getElementById("controls-div").style.display = "none";
+}
+
+function startSlide()
+
+{
+        currentElement = 0;
+        var currentImage = data[currentElement].image;
+        var currentCaption = data[currentElement].caption;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        image = new Image();
+        image.src = currentImage;
+        context.drawImage(image, 0, 0, 1000, 500);
+        document.getElementById("caption").innerHTML = currentCaption;
+}
+
+function nextSlide()
+
+{
+    if (currentElement < 19)
+    
+    {
+        currentElement++;
+        var currentImage = data[currentElement].image;
+        var currentCaption = data[currentElement].caption;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        image = new Image();
+        image.src = currentImage;
+        context.drawImage(image, 0, 0, 1000, 500);
+        document.getElementById("caption").innerHTML = currentCaption;
+    }
+    
+}
+
+function callWebService(methodAndArguments, callBack)
+
+{
+var requestUrl = "data.json";
+
+try
+{
+var asyncRequest = new XMLHttpRequest();
+asyncRequest.addEventListener("readystatechange", function() {callBack(asyncRequest);}, false);
+asyncRequest.open("GET", requestUrl, true);
+asyncRequest.setRequestHeader("Accept", "application/json; charset=utf-8");
+asyncRequest.send();
+}
+
+catch (exception)
+
+{
+alert("Request Failed");
+}
+
+}
+
+function parseData(asyncRequest)
+
+{
+
+if (asyncRequest.readyState == 4 && asyncRequest.status == 200)
+
+{
+    data = JSON.parse(asyncRequest.responseText);
+    currentElement = 0;
+    var currentImage = data[currentElement].image;
+    var currentCaption = data[currentElement].caption;
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    image.src = currentImage;
+    context.drawImage(image, 0, 0, 1000, 500);
+    document.getElementById("next-button").addEventListener("click", draw, false); 
+    document.getElementById("caption").innerHTML = currentCaption;
+}
+
+}
+
+function draw()
+
+{
+var canvas = document.getElementById("drawLines");
+context = canvas.getContext("2d");
+context.drawImage(image, 0, 0, 1000, 500);
+}
+
+
+function start()
+
+{
+document.getElementById("sequential").addEventListener("click", executeSequence, false);
+document.getElementById("random").addEventListener("click", executeRandom, false);    
+callWebService("/", parseData);
+}
+
+
+window.addEventListener("load", start, false);
+
+
+
+
+	</script>
+        
+    </div>
+  
+  
+  <footer>
+    
+      
+    <div class="copyright">
+        
+        <div class="footnotes"><h4>Distributors</h4>
+          <a class="notes" href=""><p>TV</p></a>
+          <a class="notes" href=""><p>Radio</p></a>
+          <a class="notes" href=""><p>TV Series</p></a>
+          <a class="notes" href=""><p>Movies</p></a>
+        </div>
+      <div class="footnotes"><h4>Carriers</h4>
+          <a class="notes" href=""><p>TV</p></a>
+          <a class="notes" href=""><p>Radio</p></a>
+          <a class="notes" href=""><p>TV Series</p></a>
+          <a class="notes" href=""><p>Movies</p></a>
+      </div>
+      <div class="footnotes"><h4>Legal</h4>
+          <a class="notes" href=""><p>Terms of Service</p></a>
+          <a class="notes" href=""><p>Privacy Policy</p></a>
+          <a class="notes" href=""><p>Cookie Policy</p></a>
+      </div>
+      <div class="footnotes"><h4>About</h4>
+          <a class="notes" href=""><p>HTML5</p></a>
+          <a class="notes" href=""><p>CSS3</p></a>
+          <a class="notes" href=""><p>JavaScript</p></a>
+          <a class="notes" href=""><p>JSON</p></a>
+          <a class="notes" href=""><p>XML</p></a>
+          <a class="notes" href=""><p>AJAX</p></a>
+      </div>
+      <div class="footnotes"><h4>Contact</h4>
+          <a class="notes" href=""><p>Support</p></a>
+          <a class="notes" href=""><p>Enquiries</p></a>
+          <a class="notes" href=""><p>Jobs</p></a>
+      </div>
+        <hr>
+        <p>&copy; 2017. Captive Magazine. All Rights Reserved.</p>
+        <p>Developed by @ajirios | Jeffrey Ajiri Osauzo.</p>
+    </div>
+    
+    
+  </footer>
+
+</body>
+</html>
